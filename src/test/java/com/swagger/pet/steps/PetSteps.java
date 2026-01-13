@@ -1,10 +1,7 @@
 package com.swagger.pet.steps;
 
 import com.github.javafaker.Faker;
-import com.swagger.pet.models.Category;
-import com.swagger.pet.models.Order;
-import com.swagger.pet.models.Pet;
-import com.swagger.pet.models.Tag;
+import com.swagger.pet.models.*;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -15,15 +12,10 @@ import java.util.List;
 public class PetSteps {
     static Faker faker = new Faker();
 
-    // Predefined realistic pet tags
     static List<String> petTags = Arrays.asList(
             "vaccinated", "friendly", "aggressive", "trained", "puppy"
     );
-
-    // Pick a random one
     static String randomTag = petTags.get(faker.random().nextInt(petTags.size()));
-    public static void add_pet(){
-    }
     public static Category generateCategory(){
         Category category = new Category();
         long categoryId=faker.number().numberBetween(1,9223372036854775807L);
@@ -41,19 +33,16 @@ public class PetSteps {
         return tag;
 
     }
-    public static Pet generatePet(){
+    public static Pet generatePet() {
         Pet pet = new Pet();
-        long petId=faker.number().numberBetween(1,9223372036854775807L);
-        pet.setId(petId);
+        pet.setId(faker.number().numberBetween(1, 9223372036854775807L));
         pet.setCategory(generateCategory());
-        String petName=faker.dog().name();
-        pet.setName(petName);
-        pet.setPhotoUrls(List.of("string"));
+        pet.setName(faker.dog().name());
         pet.setTags(List.of(generateTag()));
         pet.setStatus("available");
         return pet;
-
     }
+
     public static Pet updatePet(Pet pet,String status){
         Pet updatePet = new Pet();
         updatePet.setId(pet.getId());
@@ -65,13 +54,24 @@ public class PetSteps {
         return updatePet;
 
     }
-    public static Order placeOrderStep(){
+        public static Order placeOrderStep(){
+
+            Order order = new Order();
+            order.setId(faker.number().numberBetween(1,50));
+            order.setPetId(faker.number().numberBetween(1,50));
+            order.setQuantity(faker.number().numberBetween(1,50));
+            order.setShipDate("2026-01-12T19:14:26.563Z");
+            order.setStatus(Order.orderStatus.PLACED);
+            order.setComplete(true);
+            return order;
+        }
+    public static Order placeOrderManually(){
 
         Order order = new Order();
-        order.setId(8);
-        order.setPetId(9);
-        order.setQuantity(5153);
-        order.setShipDate("2026-01-12T19:14:26.563Z");
+        order.setId(-6546);
+        order.setPetId(-70);
+        order.setQuantity(-10);
+        order.setShipDate("qhatkh");
         order.setStatus(Order.orderStatus.PLACED);
         order.setComplete(true);
         return order;
@@ -83,6 +83,36 @@ public class PetSteps {
         for (int i = 0; i < statuses.size(); i++) {
             Assert.assertEquals(statuses.get(i), status);
         }
+    }
+    public static List<User> createListOfUsers(){
+        User user = new User();
+        user.setUserId(faker.number().numberBetween(1,54556456));
+        user.setUserName(faker.name().username());
+        user.setFirstName(faker.name().firstName());
+        user.setLastName(faker.name().lastName());
+        user.setEmail(faker.internet().emailAddress());
+        user.setPassword(faker.internet().password());
+        user.setPhone(faker.phoneNumber().cellPhone());
+        user.setUserStatus(1);
+        return List.of(user);
+    }
+    public static List<User> createListOfUserss(){
+        User user = new User();
+        user.setUserId(-544);
+        user.setUserName("1542");
+        user.setFirstName(faker.name().firstName());
+        user.setLastName(faker.name().lastName());
+        user.setEmail(faker.internet().emailAddress());
+        user.setPassword(faker.internet().password());
+        user.setPhone(faker.phoneNumber().cellPhone());
+        user.setUserStatus(1);
+        return List.of(user);
+    }
+    public static User loginToSystem(){
+        User user = (User) createListOfUsers();
+        user.setUserName(user.getUserName());
+        user.setPassword(user.getPassword());
+        return user;
     }
 
 

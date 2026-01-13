@@ -3,16 +3,19 @@ package com.swagger.pet.testCases;
 import com.swagger.pet.apis.API;
 import com.swagger.pet.models.Error;
 import com.swagger.pet.models.Order;
+import com.swagger.pet.models.User;
 import com.swagger.pet.steps.PetSteps;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 import com.swagger.pet.models.Pet;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class PetTest {
+public class PositiveTestcases {
 
     @Test
     public void addingPet() {
@@ -35,23 +38,10 @@ public class PetTest {
 
     @Test
     public void findPetsByStatus() {
-        String status = "pending";
+        String status = "sold";
         Response response = API.findByStatusAPI(status);
         PetSteps.assertAllPetsHaveStatus(response,status);
     }
-    @Test
-    public void findPetsByStatus1() {
-        String status = "pending";
-        Response response = API.findByStatusAPI(status);
-        PetSteps.assertAllPetsHaveStatus(response,status);
-    }
-    @Test
-    public void findPetsByStatus2() {
-        String status = "available";
-        Response response = API.findByStatusAPI(status);
-        PetSteps.assertAllPetsHaveStatus(response,status);
-    }
-
     @Test
     public void findPetById() {
         Pet pet = PetSteps.generatePet();
@@ -91,8 +81,43 @@ public class PetTest {
         assertThat(returnedResponse.getMessage(),equalTo(String.valueOf(order.getId())));
         assertThat(response.statusCode(), equalTo(200));
     }
+    @Test
+    public void createUserList(){
+        List<User> user = PetSteps.createListOfUsers();
+       Response response= API.createUser(user);
+       Error returnedResponse=response.body().as(Error.class);
+       assertThat(returnedResponse.getMessage(),equalTo("ok"));
+       assertThat(returnedResponse.getCode(),equalTo(200));
+    }
+    @Test
+    public void findingByUsername ()
+    {
+      List<User> user = PetSteps.createListOfUsers();
+        API.createUser(user);
+        User u = user.get(0);
+        Response response =API.findByUsername(u.getUserName());
+        User returnedResponse=response.as(User.class);
+        assertThat(returnedResponse.getUserName(),equalTo(u.getUserName()));
+        assertThat(returnedResponse.getEmail(),equalTo(u.getEmail()));
 
-
-
+    }
+    @Test
+    public void loginToSystem ()
+    {
+        List<User> user = PetSteps.createListOfUsers();
+        API.createUser(user);
+        User u = user.get(0);
+        Response response =API.loginUser(u.getUserName(), u.getPassword());
+        Error returnedResponse=response.as(Error.class);
+        assertThat(returnedResponse.getCode(),equalTo(200));
+    }
+    @Test
+    public void logoutFromSystem ()
+    {
+        Response response =API.logoutUser();
+        Error returnedResponse = response.as(Error.class);
+        assertThat(returnedResponse.getMessage(),equalTo("ok"));
+        assertThat(returnedResponse.getCode(),equalTo(200));
+    }
 
 }

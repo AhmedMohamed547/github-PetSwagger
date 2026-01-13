@@ -1,25 +1,29 @@
 package com.swagger.pet.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Order {
     public enum orderStatus{
         PLACED,
         APPROVED,
         DELIVERED
     }
+    @JsonProperty("id")
     private int id;
     private int petId;
     private int quantity;
     private String shipDate;
     private orderStatus status;
     private Boolean complete;
+    @JsonProperty("id")
+
     public int getId() {
         return id;
     }
-
+    @JsonProperty("id")
     public void setId(int id) {
         this.id = id;
     }
-
     public int getPetId() {
         return petId;
     }
