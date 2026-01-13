@@ -96,24 +96,4 @@ public class PetSteps {
         user.setUserStatus(1);
         return List.of(user);
     }
-    public static List<User> createListOfUserss(){
-        User user = new User();
-        user.setUserId(-544);
-        user.setUserName("1542");
-        user.setFirstName(faker.name().firstName());
-        user.setLastName(faker.name().lastName());
-        user.setEmail(faker.internet().emailAddress());
-        user.setPassword(faker.internet().password());
-        user.setPhone(faker.phoneNumber().cellPhone());
-        user.setUserStatus(1);
-        return List.of(user);
-    }
-    public static User loginToSystem(){
-        User user = (User) createListOfUsers();
-        user.setUserName(user.getUserName());
-        user.setPassword(user.getPassword());
-        return user;
-    }
-
-
 }

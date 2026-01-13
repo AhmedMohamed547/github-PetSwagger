@@ -84,7 +84,6 @@ public class API {
                 .then().log().all()
                 .extract().response();
     }
-
     public static Response loginUser(String userName, String password) {
         return given().queryParam("username", userName).queryParam("password", password)
                 .spec(Specs.requestSpec()).when()

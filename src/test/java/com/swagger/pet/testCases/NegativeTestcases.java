@@ -44,13 +44,12 @@ public class NegativeTestcases {
         assertThat(response.statusCode(), equalTo(404));
     }
     @Test
-    public void createUserList(){
-        List<User> user = PetSteps.createListOfUserss();
-        Response response= API.createUser(user);
-        Error returnedResponse=response.body().as(Error.class);
-        assertThat(returnedResponse.getMessage(),equalTo("ok"));
-        assertThat(returnedResponse.getCode(),equalTo(200));
+    public void findingByWrongUsername ()
+    {
+        Response response=API.findByUsername("ahmed.mousa");
+        Error returnedResponse=response.as(Error.class);
+        assertThat(returnedResponse.getMessage(),equalTo("User not found"));
+        assertThat(response.statusCode(),equalTo(404));
+
     }
-
-
 }

@@ -92,7 +92,7 @@ public class PositiveTestcases {
     @Test
     public void findingByUsername ()
     {
-      List<User> user = PetSteps.createListOfUsers();
+        List<User> user = PetSteps.createListOfUsers();
         API.createUser(user);
         User u = user.get(0);
         Response response =API.findByUsername(u.getUserName());
@@ -107,7 +107,7 @@ public class PositiveTestcases {
         List<User> user = PetSteps.createListOfUsers();
         API.createUser(user);
         User u = user.get(0);
-        Response response =API.loginUser(u.getUserName(), u.getPassword());
+        Response response =API.loginUser(u.getUserName(),u.getPassword());
         Error returnedResponse=response.as(Error.class);
         assertThat(returnedResponse.getCode(),equalTo(200));
     }
