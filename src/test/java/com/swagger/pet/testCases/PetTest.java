@@ -1,6 +1,8 @@
 package com.swagger.pet.testCases;
 
 import com.swagger.pet.apis.API;
+import com.swagger.pet.models.Error;
+import com.swagger.pet.models.Order;
 import com.swagger.pet.steps.PetSteps;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
@@ -33,18 +35,64 @@ public class PetTest {
 
     @Test
     public void findPetsByStatus() {
-        Response response = API.findByStatusAPI();
-        PetSteps.assertAllPetsHaveStatus(response, "sold");
+        String status = "pending";
+        Response response = API.findByStatusAPI(status);
+        PetSteps.assertAllPetsHaveStatus(response,status);
+    }
+    @Test
+    public void findPetsByStatus1() {
+        String status = "pending";
+        Response response = API.findByStatusAPI(status);
+        PetSteps.assertAllPetsHaveStatus(response,status);
+    }
+    @Test
+    public void findPetsByStatus2() {
+        String status = "available";
+        Response response = API.findByStatusAPI(status);
+        PetSteps.assertAllPetsHaveStatus(response,status);
     }
 
     @Test
-    public void findPetmById() {
+    public void findPetById() {
         Pet pet = PetSteps.generatePet();
         API.addingApi(pet);
         Response response=API.findByIdAPI(pet.getId());
-        Pet returnedresponse = response.body().as(Pet.class);
-        assertThat(returnedresponse.getId(), equalTo(pet.getId()));
+        Pet returnedResponse = response.body().as(Pet.class);
+        assertThat(returnedResponse.getId(), equalTo(pet.getId()));
         assertThat(response.statusCode(), equalTo(200));
     }
+    @Test
+    public void findingByID ()
+    {
+        Order order = PetSteps.placeOrderStep();
+        API.placeOrder(order);
+        Response response =API.findOrderByID(order.getId());
+        Order returnedResponse = response.body().as(Order.class);
+        assertThat(returnedResponse.getId(),equalTo(order.getId()));
+        assertThat(response.statusCode(), equalTo(200));
+    }
+    @Test
+    public void getPetInventories (){
+        Response response=API.getPetInv();
+        assertThat(response.statusCode(),equalTo(200));
+    }
+    @Test
+    public void placeOrder (){
+        Order order = PetSteps.placeOrderStep();
+        Response response = API.placeOrder(order);
+        assertThat(response.statusCode(),equalTo(200));
+    }
+    @Test
+    public void deleteOrder (){
+        Order order = PetSteps.placeOrderStep();
+        API.placeOrder(order);
+        Response response =API.deleteOrderByID(order.getId());
+        Error returnedResponse = response.body().as(Error.class);
+        assertThat(returnedResponse.getMessage(),equalTo(String.valueOf(order.getId())));
+        assertThat(response.statusCode(), equalTo(200));
+    }
+
+
+
 
 }

@@ -2,6 +2,7 @@ package com.swagger.pet.steps;
 
 import com.github.javafaker.Faker;
 import com.swagger.pet.models.Category;
+import com.swagger.pet.models.Order;
 import com.swagger.pet.models.Pet;
 import com.swagger.pet.models.Tag;
 import io.restassured.path.json.JsonPath;
@@ -64,13 +65,25 @@ public class PetSteps {
         return updatePet;
 
     }
+    public static Order placeOrderStep(){
 
-    public static void assertAllPetsHaveStatus(Response response, String expectedStatus) {
+        Order order = new Order();
+        order.setId(8);
+        order.setPetId(9);
+        order.setQuantity(5153);
+        order.setShipDate("2026-01-12T19:14:26.563Z");
+        order.setStatus(Order.orderStatus.PLACED);
+        order.setComplete(true);
+        return order;
+    }
+    public static void assertAllPetsHaveStatus(Response response,String status) {
         JsonPath js = response.jsonPath();
         List<String> statuses = js.getList("status");
 
         for (int i = 0; i < statuses.size(); i++) {
-            Assert.assertEquals(statuses.get(i), "sold");
+            Assert.assertEquals(statuses.get(i), status);
         }
     }
+
+
 }
