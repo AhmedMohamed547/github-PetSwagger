@@ -1,7 +1,8 @@
 package com.swagger.pet.testCases;
 
 import com.swagger.pet.apis.API;
-import com.swagger.pet.models.Error;
+import com.swagger.pet.data.ErrorMessages;
+import com.swagger.pet.models.ResponseMeesage;
 import com.swagger.pet.models.Order;
 import com.swagger.pet.models.User;
 import com.swagger.pet.steps.PetSteps;
@@ -77,15 +78,15 @@ public class PositiveTestcases {
         Order order = PetSteps.placeOrderStep();
         API.placeOrder(order);
         Response response =API.deleteOrderByID(order.getId());
-        Error returnedResponse = response.body().as(Error.class);
-        assertThat(returnedResponse.getMessage(),equalTo(String.valueOf(order.getId())));
         assertThat(response.statusCode(), equalTo(200));
+        ResponseMeesage returnedResponse = response.body().as(ResponseMeesage.class);
+        assertThat(returnedResponse.getMessage(),equalTo(String.valueOf(order.getId())));
     }
     @Test
     public void createUserList(){
         List<User> user = PetSteps.createListOfUsers();
        Response response= API.createUser(user);
-       Error returnedResponse=response.body().as(Error.class);
+       ResponseMeesage returnedResponse=response.body().as(ResponseMeesage.class);
        assertThat(returnedResponse.getMessage(),equalTo("ok"));
        assertThat(returnedResponse.getCode(),equalTo(200));
     }
@@ -108,14 +109,14 @@ public class PositiveTestcases {
         API.createUser(user);
         User u = user.get(0);
         Response response =API.loginUser(u.getUserName(),u.getPassword());
-        Error returnedResponse=response.as(Error.class);
+        ResponseMeesage returnedResponse=response.as(ResponseMeesage.class);
         assertThat(returnedResponse.getCode(),equalTo(200));
     }
     @Test
     public void logoutFromSystem ()
     {
         Response response =API.logoutUser();
-        Error returnedResponse = response.as(Error.class);
+        ResponseMeesage returnedResponse = response.as(ResponseMeesage.class);
         assertThat(returnedResponse.getMessage(),equalTo("ok"));
         assertThat(returnedResponse.getCode(),equalTo(200));
     }

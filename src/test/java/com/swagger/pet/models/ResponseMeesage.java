@@ -1,6 +1,6 @@
 package com.swagger.pet.models;
 
-public class Error {
+public class ResponseMeesage {
     public int getCode() {
         return code;
     }
