@@ -13,12 +13,11 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
 
 public class EdgeTestcases {
     @Test
-    public void createPetWithlongName() {
+    public void createPetWithLongName() {
         Pet pet = PetSteps.generatePet();
         pet.setName("A".repeat(255));
 
@@ -76,5 +75,6 @@ public class EdgeTestcases {
 
         assertThat(response.statusCode(), equalTo(200));
     }
+
 
 }
